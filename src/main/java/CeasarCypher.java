@@ -27,18 +27,17 @@ public class CeasarCypher implements Encryptor {
                     return null;
                 }
             }
-            System.out.println(resultChars);
-            result = Arrays.toString(resultChars);
+            result = String.valueOf(resultChars);
         } catch (InputMismatchException e) {
             System.out.println("Entered interval is not an integer");
-            return null;
+            throw e;
         }
         return result;
     }
 
     private char swapLetter(char letter, int interval, int lowerInt, int higherInt) {
         letter += interval;
-        if (letter > higherInt) letter = (char) (letter - (higherInt - lowerInt));
+        if (letter > higherInt) letter = (char) (letter - (higherInt - lowerInt) - 1);
         return letter;
     }
 }
