@@ -1,5 +1,5 @@
-import java.io.InputStream;
-import java.util.Arrays;
+package encryption;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

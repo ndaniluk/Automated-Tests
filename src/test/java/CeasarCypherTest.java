@@ -1,9 +1,9 @@
+import encryption.CeasarCypher;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +40,4 @@ class CeasarCypherTest {
         String encryptedInput = ceasarCypher.encrypt("1337");
         assertNull(encryptedInput);
     }
-
-
 }
