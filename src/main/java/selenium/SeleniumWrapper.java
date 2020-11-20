@@ -19,38 +19,58 @@ public class SeleniumWrapper {
         webDriver.quit();
     }
 
-    private WebElement getWebElement(String xpath) {
-        waitForWebElement(xpath);
-        return webDriver.findElement(By.xpath(xpath));
+    private WebElement getWebElement(Selector selector, String selectorValue) {
+        waitForWebElement(selector, selectorValue);
+        return webDriver.findElement(createBy(selector, selectorValue));
     }
 
-    private void waitForWebElement(String xpath) {
+    private void waitForWebElement(Selector selector, String selectorValue) {
         (new WebDriverWait(webDriver, 20))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+                .until(ExpectedConditions.visibilityOfElementLocated(createBy(selector, selectorValue)));
     }
 
-    public void hover(String xpath) {
-        WebElement webElement = getWebElement(xpath);
+    private By createBy(Selector selector, String selectorValue) {
+        switch (selector) {
+            case XPATH:
+                return By.xpath(selectorValue);
+            case CLASS:
+                return By.className(selectorValue);
+            case TAG:
+                return By.tagName(selectorValue);
+            case NAME:
+                return By.name(selectorValue);
+            default:
+                return null;
+        }
+    }
+
+    public void waitForPageLoad(){
+        WebDriverWait wait = new WebDriverWait(webDriver, 15);
+        wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").toString().equals("complete"));
+    }
+
+    public void hover(Selector selector, String selectorValue) {
+        WebElement webElement = getWebElement(selector, selectorValue);
         builder.moveToElement(webElement).perform();
     }
 
-    public void click(String xpath) {
-        WebElement webElement = getWebElement(xpath);
+    public void click(Selector selector, String selectorValue) {
+        WebElement webElement = getWebElement(selector, selectorValue);
         builder.click(webElement).perform();
     }
 
-    public String getValue(String xpath) {
-        WebElement webElement = getWebElement(xpath);
+    public String getValue(Selector selector, String selectorValue) {
+        WebElement webElement = getWebElement(selector, selectorValue);
         return webElement.getText();
     }
 
-    public void inputValue(String xpath, String value) {
-        WebElement webElement = getWebElement(xpath);
-        webElement.sendKeys(value);
+    public void inputValue(Selector selector, String selectorValue, String inputValue) {
+        WebElement webElement = getWebElement(selector, selectorValue);
+        webElement.sendKeys(inputValue);
     }
 
-    public int getElementsCount(String xpath) {
-        WebElement webElement = getWebElement(xpath);
-        return webElement.findElements(By.tagName("tr")).size();
+    public int getElementsCount(Selector selector, String selectorValue, Selector childSelector, String childSelectorValue) {
+        WebElement webElement = getWebElement(selector, selectorValue);
+        return webElement.findElements(createBy(childSelector, childSelectorValue)).size();
     }
 }
