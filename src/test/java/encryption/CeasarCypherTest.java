@@ -1,3 +1,5 @@
+package encryption;
+
 import encryption.CeasarCypher;
 import org.junit.jupiter.api.Test;
 

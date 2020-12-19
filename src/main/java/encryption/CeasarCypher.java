@@ -1,11 +1,19 @@
 package encryption;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class CeasarCypher implements Encryptor {
+    public CeasarCypher() {
+        this.enteredMessages = new ArrayList<>();
+    }
 
-    public String encrypt(String input) {
+    private final List<Decryptor> enteredMessages;
+
+    public String encrypt(String input){
+        return encryptWithDecryptor(input, null, null);
+    }
+
+    public String encryptWithDecryptor(String input, String decryptQuestion, String decryptAnswer) {
         System.out.println("This encryptor supports only English alphabet.");
         String result;
         Scanner scanner = new Scanner(System.in);
@@ -28,11 +36,16 @@ public class CeasarCypher implements Encryptor {
                 }
             }
             result = String.valueOf(resultChars);
+            enteredMessages.add(new Decryptor(input, result, decryptQuestion, decryptAnswer));
         } catch (InputMismatchException e) {
             System.out.println("Entered interval is not an integer");
             throw e;
         }
         return result;
+    }
+
+    public List<Decryptor> getEnteredMessages() {
+        return enteredMessages;
     }
 
     private char swapLetter(char letter, int interval, int lowerInt, int higherInt) {
